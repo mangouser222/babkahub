@@ -1,655 +1,1118 @@
-
-local v0 = loadstring;
-local v1 = loadstring([[
-	local Env, upvalues = ...
-	local new = newproxy(true)
-	local mt = getmetatable(new)
-	mt.__metatable = new
-	mt.__environment = new
-	mt.__index = function(t,k) return Env[k] or upvalues[k] end
-	mt.__newindex = function(t,k,v)
-		--if rawget(upvalues,k) then return rawset(upvalues,k,v) end
-		Env[k] = v
-	end
-return setmetatable({},mt)
-]], "");
-local v2 = {};
-local v3 = {};
-local v4 = game:GetService("Players");
-local v5 = v4.LocalPlayer;
-local v6 = workspace.CurrentCamera;
-local v7 = game:GetService("RunService");
-local v8 = game:GetService("UserInputService");
-local v9 = game:GetService("TweenService");
-local v10 = game:GetService("VirtualInputManager");
-local v11 = {AutoPickupGun=false,KillAura=false,KillAuraRange=15,SpeedEnabled=false,SpeedValue=50,FlyEnabled=false,FlySpeed=50,ESPEnabled=false,ESPBox=true,ESPFill=true,ESPTracer=true,ESPName=true,ESPDistance=true,ESPFillTransparency=0.4};
-local function v12(v101)
-	v2[107] = v101:FindFirstChild("Role");
-	if (v2[107] and v2[107]:IsA("StringValue")) then
-		v2[125] = v2[107].Value;
-		if ((v2[125] == "Murderer") or (v2[125] == "Sheriff") or (v2[125] == "Innocent") or (v2[125] == "Hero")) then
-			return v2[125];
+local v0 = game:GetService("Players");
+local v1 = v0.LocalPlayer;
+local v2 = workspace.CurrentCamera;
+local v3 = game:GetService("RunService");
+local v4 = game:GetService("UserInputService");
+local v5 = game:GetService("TweenService");
+local v6 = game:GetService("VirtualInputManager");
+local v7 = {AutoPickupGun=false,KillAura=false,KillAuraRange=(1574 - (120 + 1439)),SpeedEnabled=false,SpeedValue=50,FlyEnabled=false,FlySpeed=(1834 - (599 + 1185)),ESPEnabled=false,ESPFillTransparency=(0.35 + 0)};
+local function v8(v93)
+	local v94 = v93:FindFirstChild("Role");
+	if (v94 and v94:IsA("StringValue")) then
+		local v215 = v94.Value;
+		if ((v215 == "Murderer") or (v215 == "Sheriff") or (v215 == "Innocent") or (v215 == "Hero")) then
+			return v215;
 		end
 	end
-	if (v101:FindFirstChild("Murderer") and (v101.Murderer.Value == true)) then
+	local v95 = v93:FindFirstChild("Murderer");
+	if (v95 and v95:IsA("BoolValue") and v95.Value) then
 		return "Murderer";
 	end
-	if (v101:FindFirstChild("Sheriff") and (v101.Sheriff.Value == true)) then
+	local v96 = v93:FindFirstChild("Sheriff");
+	if (v96 and v96:IsA("BoolValue") and v96.Value) then
 		return "Sheriff";
 	end
-	if (v101:FindFirstChild("Hero") and (v101.Hero.Value == true)) then
+	local v97 = v93:FindFirstChild("Hero");
+	if (v97 and v97:IsA("BoolValue") and v97.Value) then
 		return "Hero";
 	end
-	v2[210] = v101:FindFirstChild("leaderstats");
-	if v2[210] then
-		for v315, v316 in ipairs(v2[210]:GetChildren()) do
-			if v316:IsA("StringValue") then
-				v2[240] = v316.Value;
-				if ((v2[240] == "Murderer") or (v2[240] == "Sheriff") or (v2[240] == "Hero") or (v2[240] == "Innocent")) then
-					return v2[240];
+	local v98 = v93:FindFirstChild("leaderstats");
+	if v98 then
+		for v228, v229 in ipairs(v98:GetChildren()) do
+			if v229:IsA("StringValue") then
+				local v301 = 0 + 0;
+				local v302;
+				while true do
+					if (v301 == 0) then
+						v302 = v229.Value;
+						if ((v302 == "Murderer") or (v302 == "Sheriff") or (v302 == "Innocent") or (v302 == "Hero")) then
+							return v302;
+						end
+						break;
+					end
 				end
 			end
 		end
 	end
-	v2[266] = nil;
-	v2[266] = function(...)
-		if (v2[391398373] == nil) then
-			local v317, v318 = v0([===[
-local toolName = ...;
-luaobf_locals[272] = plr.Character;
-luaobf_locals[278] = plr:FindFirstChildOfClass("Backpack");
-luaobf_locals[287] = nil;
-luaobf_locals[287] = function(tool)
-	if (tool:IsA("Tool") and string.lower(tool.Name):find(toolName)) then
-		return true;
-	end
-	return false;
-end;
-if luaobf_locals[272] then
-	for _, v in ipairs(luaobf_locals[272]:GetChildren()) do
-		if luaobf_locals[287](v) then
-			return true;
-		end
-	end
-end
-if luaobf_locals[278] then
-	for _, v in ipairs(luaobf_locals[278]:GetChildren()) do
-		if luaobf_locals[287](v) then
-			return true;
-		end
-	end
-end
-return false;
-]===], "");
-			local v319 = {luaobf_locals=v2,plr=v101,tool=tool,string=string,toolName=toolName,_=_,v=v,ipairs=ipairs};
-			setfenv(v317, v1(getfenv(1), v319));
-			v2[391398373] = v317;
-		end
-		return v2[391398373](...);
-	end;
-	v2[364] = v2[266]("knife");
-	v2[369] = v2[266]("gun") or v2[266]("pistol");
-	if v2[364] then
-		return "Murderer";
-	end
-	if v2[369] then
-		v2[386] = false;
-		for v321, v322 in ipairs(v4:GetPlayers()) do
-			if ((v322 ~= v101) and (v12(v322) == "Sheriff")) then
-				v2[386] = true;
-				break;
+	local function v99(v203)
+		for v216, v217 in ipairs(v203:GetChildren()) do
+			if v217:IsA("StringValue") then
+				local v292 = 574 - (507 + 67);
+				local v293;
+				while true do
+					if (v292 == (1749 - (1013 + 736))) then
+						v293 = v217.Value;
+						if ((v293 == "Murderer") or (v293 == "Sheriff") or (v293 == "Innocent") or (v293 == "Hero")) then
+							return v293;
+						end
+						break;
+					end
+				end
+			end
+			local v218 = v99(v217);
+			if v218 then
+				return v218;
 			end
 		end
-		if v2[386] then
-			return "Sheriff";
-		else
-			return "Hero";
+		return nil;
+	end
+	local v100 = v99(v93);
+	if v100 then
+		return v100;
+	end
+	local function v101(v204, v205)
+		local v206 = 0;
+		local v207;
+		local v208;
+		local v209;
+		while true do
+			if (v206 == (0 + 0)) then
+				v207 = v204.Character;
+				v208 = v204:FindFirstChildOfClass("Backpack");
+				v206 = 1;
+			end
+			if (v206 == 1) then
+				v209 = nil;
+				function v209(v303)
+					if (v303:IsA("Tool") and string.lower(v303.Name):find(v205)) then
+						return true;
+					end
+					return false;
+				end
+				v206 = 4 - 2;
+			end
+			if (v206 == (10 - 7)) then
+				return false;
+			end
+			if (v206 == 2) then
+				if v207 then
+					for v342, v343 in ipairs(v207:GetChildren()) do
+						if v209(v343) then
+							return true;
+						end
+					end
+				end
+				if v208 then
+					for v344, v345 in ipairs(v208:GetChildren()) do
+						if v209(v345) then
+							return true;
+						end
+					end
+				end
+				v206 = 3;
+			end
+		end
+	end
+	local v102 = v101(v93, "knife");
+	local v103 = v101(v93, "gun") or v101(v93, "pistol");
+	if v102 then
+		return "Murderer";
+	end
+	if v103 then
+		local v219 = 0;
+		while true do
+			if (v219 == (867 - (550 + 317))) then
+				local v304 = 0;
+				while true do
+					if (v304 == 0) then
+						for v379, v380 in ipairs(v0:GetPlayers()) do
+							if ((v380 ~= v93) and (v8(v380) == "Sheriff")) then
+								return "Sheriff";
+							end
+						end
+						return "Hero";
+					end
+				end
+			end
 		end
 	end
 	return "Innocent";
 end
-local function v13(v107)
-	if (v107 == "Murderer") then
-		return Color3.fromRGB(255, 0, 0);
-	elseif (v107 == "Sheriff") then
-		return Color3.fromRGB(0, 0, 255);
-	elseif (v107 == "Hero") then
-		return Color3.fromRGB(255, 255, 0);
+local function v9(v104)
+	if (v104 == "Murderer") then
+		return Color3.fromRGB(368 - 113, 0, 0 - 0);
+	elseif (v104 == "Sheriff") then
+		return Color3.fromRGB(0 - 0, 285 - (134 + 151), 1920 - (970 + 695));
+	elseif (v104 == "Hero") then
+		return Color3.fromRGB(486 - 231, 255, 0);
 	else
-		return Color3.fromRGB(0, 255, 0);
+		return Color3.fromRGB(0, 2245 - (582 + 1408), 0 - 0);
 	end
 end
-local function v14()
-	for v282, v283 in ipairs(workspace:GetDescendants()) do
-		if v283:IsA("Tool") then
-			v2[512] = string.lower(v283.Name);
-			if (v2[512]:find("gun") or v2[512]:find("pistol")) then
-				return v283;
-			end
-		end
-	end
-	return nil;
-end
-local function v15(v108)
-	v2[549] = v5.Character;
-	if (v2[549] and v2[549]:FindFirstChild("HumanoidRootPart")) then
-		v2[549]:SetPrimaryPartCFrame(CFrame.new(v108));
-	end
-end
-local function v16()
-	v2[582] = v5.Character;
-	if not v2[582] then
-		return;
-	end
-	v2[593] = v2[582]:FindFirstChildOfClass("Tool");
-	if not v2[593] then
-		v2[605] = v5:FindFirstChildOfClass("Backpack");
-		if v2[605] then
-			v2[593] = v2[605]:FindFirstChildOfClass("Tool");
-		end
-	end
-	if v2[593] then
-		v2[593]:Activate();
-	else
-		v10:SendMouseButtonEvent(0, 0, 0, true, game, 0);
-		wait(0.05);
-		v10:SendMouseButtonEvent(0, 0, 0, false, game, 0);
-	end
-end
-local v17 = Instance.new("ScreenGui");
-v17.Name = "BabkaHub";
-v17.ResetOnSpawn = false;
-v17.ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
-v17.Parent = v5:WaitForChild("PlayerGui");
-local v23 = Instance.new("Frame");
-v23.Name = "MainFrame";
-v23.Size = UDim2.new(0, 420, 0, 380);
-v23.Position = UDim2.new(0.5, -210, 0.5, -190);
-v23.BackgroundColor3 = Color3.fromRGB(15, 15, 20);
-v23.BackgroundTransparency = 0.25;
-v23.BorderSizePixel = 0;
-v23.Active = true;
-v23.Draggable = true;
-v23.Parent = v17;
-local v33 = Instance.new("UICorner");
-v33.CornerRadius = UDim.new(0, 16);
-v33.Parent = v23;
-local v36 = Instance.new("Frame");
-v36.Size = UDim2.new(1, 0, 0, 45);
-v36.Position = UDim2.new(0, 0, 0, 0);
-v36.BackgroundColor3 = Color3.fromRGB(0, 0, 0);
-v36.BackgroundTransparency = 0.3;
-v36.BorderSizePixel = 0;
-v36.Parent = v23;
-local v43 = Instance.new("UICorner");
-v43.CornerRadius = UDim.new(0, 16);
-v43.Parent = v36;
-local v46 = Instance.new("TextLabel");
-v46.Size = UDim2.new(1, -60, 1, 0);
-v46.Position = UDim2.new(0, 20, 0, 0);
-v46.BackgroundTransparency = 1;
-v46.Text = "Babka Hub";
-v46.TextColor3 = Color3.fromRGB(255, 255, 255);
-v46.Font = Enum.Font.GothamBold;
-v46.TextSize = 20;
-v46.TextXAlignment = Enum.TextXAlignment.Left;
-v46.Parent = v36;
-local v58 = Instance.new("TextButton");
-v58.Size = UDim2.new(0, 30, 0, 30);
-v58.Position = UDim2.new(1, -40, 0, 7);
-v58.BackgroundColor3 = Color3.fromRGB(255, 0, 0);
-v58.BackgroundTransparency = 0.4;
-v58.BorderSizePixel = 0;
-v58.Text = "✕";
-v58.TextColor3 = Color3.fromRGB(255, 255, 255);
-v58.Font = Enum.Font.GothamBold;
-v58.TextSize = 16;
-v58.Parent = v36;
-local v69 = Instance.new("UICorner");
-v69.CornerRadius = UDim.new(0, 8);
-v69.Parent = v58;
-v58.MouseButton1Click:Connect(function()
-	v17:Destroy();
-end);
-local v72 = {};
-local v73 = {"Combat","Movement","Visual","Misc"};
-local v74 = {"⚔️","🏃","👁","⚙️"};
-local v75 = {};
-local function v76(v114, v115, v116)
-	local v117 = Instance.new("TextButton");
-	v117.Name = v114;
-	v117.Size = UDim2.new(0.25, -6, 0, 32);
-	v117.Position = UDim2.new((v116 - 1) * 0.25, 3, 0, 50);
-	v117.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
-	v117.BackgroundTransparency = 0.7;
-	v117.BorderSizePixel = 0;
-	v117.Text = v115 .. " " .. v114;
-	v117.TextColor3 = Color3.fromRGB(200, 200, 200);
-	v117.Font = Enum.Font.Gotham;
-	v117.TextSize = 12;
-	v117.Parent = v23;
-	local v130 = Instance.new("UICorner");
-	v130.CornerRadius = UDim.new(0, 8);
-	v130.Parent = v117;
-	v117.MouseButton1Click:Connect(function()
-		for v301, v302 in pairs(v75) do
-			v302.Visible = false;
-		end
-		for v304, v305 in pairs(v72) do
-			v305.BackgroundTransparency = 0.7;
-			v305.TextColor3 = Color3.fromRGB(200, 200, 200);
-		end
-		v117.BackgroundTransparency = 0.2;
-		v117.TextColor3 = Color3.fromRGB(255, 255, 255);
-		v75[v114].Visible = true;
-	end);
-	return v117;
-end
-for v133, v134 in ipairs(v73) do
-	v2[1681] = v76(v134, v74[v133], v133);
-	table.insert(v72, v2[1681]);
-end
-local function v77(v136)
-	v2[1704] = Instance.new("Frame");
-	v2[1704].Name = v136;
-	v2[1704].Size = UDim2.new(1, -20, 1, -90);
-	v2[1704].Position = UDim2.new(0, 10, 0, 85);
-	v2[1704].BackgroundTransparency = 1;
-	v2[1704].Parent = v23;
-	v2[1704].Visible = false;
-	return v2[1704];
-end
-for v144, v145 in ipairs(v73) do
-	v75[v145] = v77(v145);
-end
-v75['Combat'].Visible = true;
-local function v79(v147, v148, v149, v150)
-	v2[1833] = Instance.new("Frame");
-	v2[1833].Size = UDim2.new(1, 0, 0, 32);
-	v2[1833].Position = UDim2.new(0, 0, 0, v150);
-	v2[1833].BackgroundTransparency = 1;
-	v2[1833].Parent = v147;
-	v2[1897] = Instance.new("TextLabel");
-	v2[1897].Size = UDim2.new(0.7, 0, 1, 0);
-	v2[1897].Position = UDim2.new(0, 0, 0, 0);
-	v2[1897].BackgroundTransparency = 1;
-	v2[1897].Text = v148;
-	v2[1897].TextColor3 = Color3.fromRGB(255, 255, 255);
-	v2[1897].Font = Enum.Font.Gotham;
-	v2[1897].TextSize = 13;
-	v2[1897].TextXAlignment = Enum.TextXAlignment.Left;
-	v2[1897].Parent = v2[1833];
-	local v168 = Instance.new("TextButton");
-	v168.Size = UDim2.new(0, 44, 0, 22);
-	v168.Position = UDim2.new(1, -50, 0, 5);
-	v168.BackgroundColor3 = Color3.fromRGB(255, 0, 0);
-	v168.BackgroundTransparency = 0.3;
-	v168.BorderSizePixel = 0;
-	v168.Text = "";
-	v168.Parent = v2[1833];
-	local v176 = Instance.new("UICorner");
-	v176.CornerRadius = UDim.new(1, 0);
-	v176.Parent = v168;
-	local v179 = Instance.new("Frame");
-	v179.Size = UDim2.new(0, 18, 0, 18);
-	v179.Position = UDim2.new(0, 2, 0, 2);
-	v179.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
-	v179.BorderSizePixel = 0;
-	v179.Parent = v168;
-	local v185 = Instance.new("UICorner");
-	v185.CornerRadius = UDim.new(1, 0);
-	v185.Parent = v179;
-	local function v188()
-		if v11[v149] then
-			v168.BackgroundColor3 = Color3.fromRGB(0, 255, 0);
-			v168.BackgroundTransparency = 0.3;
-			v179.Position = UDim2.new(0, 24, 0, 2);
-		else
-			v168.BackgroundColor3 = Color3.fromRGB(255, 0, 0);
-			v168.BackgroundTransparency = 0.3;
-			v179.Position = UDim2.new(0, 2, 0, 2);
-		end
-	end
-	v188();
-	v168.MouseButton1Click:Connect(function()
-		v11[v149] = not v11[v149];
-		v188();
-	end);
-end
-local function v80(v189, v190, v191, v192, v193, v194, v195)
-	v2[2421] = Instance.new("Frame");
-	v2[2421].Size = UDim2.new(1, 0, 0, 45);
-	v2[2421].Position = UDim2.new(0, 0, 0, v195);
-	v2[2421].BackgroundTransparency = 1;
-	v2[2421].Parent = v189;
-	local v201 = Instance.new("TextLabel");
-	v201.Size = UDim2.new(1, 0, 0, 18);
-	v201.Position = UDim2.new(0, 0, 0, 0);
-	v201.BackgroundTransparency = 1;
-	v201.Text = v190 .. ": " .. tostring(v193);
-	v201.TextColor3 = Color3.fromRGB(255, 255, 255);
-	v201.Font = Enum.Font.Gotham;
-	v201.TextSize = 12;
-	v201.TextXAlignment = Enum.TextXAlignment.Left;
-	v201.Parent = v2[2421];
-	local v213 = Instance.new("TextBox");
-	v213.Size = UDim2.new(1, 0, 0, 20);
-	v213.Position = UDim2.new(0, 0, 0, 20);
-	v213.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
-	v213.BackgroundTransparency = 0.4;
-	v213.BorderSizePixel = 0;
-	v213.Text = tostring(v193);
-	v213.TextColor3 = Color3.fromRGB(255, 255, 255);
-	v213.Font = Enum.Font.Gotham;
-	v213.TextSize = 12;
-	v213.Parent = v2[2421];
-	local v224 = Instance.new("UICorner");
-	v224.CornerRadius = UDim.new(0, 4);
-	v224.Parent = v213;
-	v213.FocusLost:Connect(function(v288)
-		v2[2815] = tonumber(v213.Text);
-		if v2[2815] then
-			v2[2815] = math.clamp(v2[2815], v191, v192);
-			v11[v194] = v2[2815];
-			v201.Text = v190 .. ": " .. tostring(v2[2815]);
-		end
-	end);
-end
-v79(v75['Combat'], "Auto Pickup Gun", "AutoPickupGun", 10);
-v79(v75['Combat'], "Kill Aura (Murderer)", "KillAura", 50);
-v80(v75['Combat'], "Kill Aura Range", 5, 50, v11.KillAuraRange, "KillAuraRange", 90);
-v79(v75['Movement'], "Speed", "SpeedEnabled", 10);
-v80(v75['Movement'], "Speed Value", 16, 200, v11.SpeedValue, "SpeedValue", 50);
-v79(v75['Movement'], "Fly", "FlyEnabled", 90);
-v80(v75['Movement'], "Fly Speed", 10, 200, v11.FlySpeed, "FlySpeed", 130);
-v79(v75['Visual'], "ESP Enabled", "ESPEnabled", 10);
-v79(v75['Visual'], "Box", "ESPBox", 50);
-v79(v75['Visual'], "Fill", "ESPFill", 90);
-v79(v75['Visual'], "Tracer", "ESPTracer", 130);
-v79(v75['Visual'], "Name", "ESPName", 170);
-v79(v75['Visual'], "Distance", "ESPDistance", 210);
-local v81 = Instance.new("TextLabel");
-v81.Size = UDim2.new(1, 0, 0, 30);
-v81.Position = UDim2.new(0, 0, 0, 10);
-v81.BackgroundTransparency = 1;
-v81.Text = "Babka Hub v1.0";
-v81.TextColor3 = Color3.fromRGB(255, 255, 255);
-v81.Font = Enum.Font.Gotham;
-v81.TextSize = 14;
-v81.Parent = v75['Misc'];
-local v92 = {};
-local function v93(v227)
-	if v92[v227] then
-		return;
-	end
-	v2[3118] = {};
-	v2[3118].Box = Drawing.new("Square");
-	v2[3118].Box.Thickness = 2;
-	v2[3118].Box.Filled = false;
-	v2[3118].Box.Transparency = 1;
-	v2[3118].Box.Visible = false;
-	v2[3118].Box.Color = Color3.new(1, 1, 1);
-	v2[3118].Fill = Drawing.new("Square");
-	v2[3118].Fill.Thickness = 1;
-	v2[3118].Fill.Filled = true;
-	v2[3118].Fill.Transparency = v11.ESPFillTransparency;
-	v2[3118].Fill.Visible = false;
-	v2[3118].Fill.Color = Color3.new(1, 1, 1);
-	v2[3118].Tracer = Drawing.new("Line");
-	v2[3118].Tracer.Thickness = 1;
-	v2[3118].Tracer.Transparency = 1;
-	v2[3118].Tracer.Visible = false;
-	v2[3118].Tracer.Color = Color3.new(1, 1, 1);
-	v2[3118].Name = Drawing.new("Text");
-	v2[3118].Name.Size = 13;
-	v2[3118].Name.Center = true;
-	v2[3118].Name.Outline = true;
-	v2[3118].Name.Transparency = 1;
-	v2[3118].Name.Visible = false;
-	v2[3118].Name.Color = Color3.new(1, 1, 1);
-	v2[3118].Dist = Drawing.new("Text");
-	v2[3118].Dist.Size = 12;
-	v2[3118].Dist.Center = true;
-	v2[3118].Dist.Outline = true;
-	v2[3118].Dist.Transparency = 1;
-	v2[3118].Dist.Visible = false;
-	v2[3118].Dist.Color = Color3.new(1, 1, 1);
-	v92[v227] = v2[3118];
-end
-local function v94(v262)
-	v2[3665] = v92[v262];
-	if v2[3665] then
-		for v333, v334 in pairs(v2[3665]) do
-			v334:Remove();
-		end
-		v92[v262] = nil;
-	end
-end
-v7.RenderStepped:Connect(function()
-	v2[3703] = v11.ESPEnabled;
-	for v290, v291 in ipairs(v4:GetPlayers()) do
-		if (v291 ~= v5) then
-			v93(v291);
-			v2[3728] = v92[v291];
-			v2[3733] = v291.Character;
-			v2[3739] = v2[3733] and v2[3733]:FindFirstChild("HumanoidRootPart");
-			v2[3749] = v2[3733] and v2[3733]:FindFirstChildOfClass("Humanoid");
-			if (v2[3703] and v2[3739] and v2[3749] and (v2[3749].Health > 0)) then
-				v2[3773] = v12(v291);
-				v2[3778] = v13(v2[3773]);
-				v2[3783] = v2[3739].Position;
-				v2[3789] = v2[3783] + Vector3.new(0, 2.5, 0);
-				v2[3801] = v2[3783] - Vector3.new(0, 3, 0);
-				v2[3813], v2[3814] = v6:WorldToScreenPoint(v2[3789]);
-				v2[3822], v2[3823] = v6:WorldToScreenPoint(v2[3801]);
-				v2[3831] = Vector2.new(v6.ViewportSize.X / 2, v6.ViewportSize.Y / 2);
-				v2[3856] = (v2[3783] - v5.Character.HumanoidRootPart.Position).Magnitude;
-				v2[3873] = math.abs(v2[3822].Y - v2[3813].Y);
-				v2[3889] = v2[3873] * 0.6;
-				v2[3894] = v2[3813].X - (v2[3889] / 2);
-				v2[3904] = v2[3813].Y;
-				if (v11.ESPBox and v2[3814] and v2[3823]) then
-					v2[3728].Box.Position = Vector2.new(v2[3894], v2[3904]);
-					v2[3728].Box.Size = Vector2.new(v2[3889], v2[3873]);
-					v2[3728].Box.Color = v2[3778];
-					v2[3728].Box.Visible = true;
-				else
-					v2[3728].Box.Visible = false;
-				end
-				if (v11.ESPFill and v2[3814] and v2[3823]) then
-					v2[3728].Fill.Position = Vector2.new(v2[3894], v2[3904]);
-					v2[3728].Fill.Size = Vector2.new(v2[3889], v2[3873]);
-					v2[3728].Fill.Color = v2[3778];
-					v2[3728].Fill.Transparency = v11.ESPFillTransparency;
-					v2[3728].Fill.Visible = true;
-				else
-					v2[3728].Fill.Visible = false;
-				end
-				if (v11.ESPTracer and v2[3814]) then
-					v2[3728].Tracer.From = v2[3831];
-					v2[3728].Tracer.To = Vector2.new(v2[3813].X, v2[3813].Y);
-					v2[3728].Tracer.Color = v2[3778];
-					v2[3728].Tracer.Visible = true;
-				else
-					v2[3728].Tracer.Visible = false;
-				end
-				if (v11.ESPName and v2[3814]) then
-					v2[3728].Name.Text = v291.Name .. " [" .. v2[3773] .. "]";
-					v2[3728].Name.Position = Vector2.new(v2[3813].X, v2[3813].Y - 15);
-					v2[3728].Name.Color = v2[3778];
-					v2[3728].Name.Visible = true;
-				else
-					v2[3728].Name.Visible = false;
-				end
-				if (v11.ESPDistance and v2[3814]) then
-					v2[3728].Dist.Text = string.format("%.1f studs", v2[3856]);
-					v2[3728].Dist.Position = Vector2.new(v2[3813].X, v2[3813].Y + 15);
-					v2[3728].Dist.Color = v2[3778];
-					v2[3728].Dist.Visible = true;
-				else
-					v2[3728].Dist.Visible = false;
-				end
-			else
-				for v377, v378 in pairs(v2[3728]) do
-					v378.Visible = false;
-				end
-			end
-		end
-	end
-end);
-v4.PlayerRemoving:Connect(function(v267)
-	v94(v267);
-end);
-v7.Heartbeat:Connect(function()
-	if v11.SpeedEnabled then
-		v2[4505] = v5.Character;
-		if (v2[4505] and v2[4505]:FindFirstChildOfClass("Humanoid")) then
-			v2[4505].Humanoid.WalkSpeed = v11.SpeedValue;
-		end
-	end
-end);
-local v95, v96;
-local v97;
-local function v98()
-	local v268 = v5.Character;
-	if not v268 then
-		return;
-	end
-	local v269 = v268:FindFirstChild("HumanoidRootPart");
-	if not v269 then
-		return;
-	end
-	v95 = Instance.new("BodyVelocity");
-	v95.MaxForce = Vector3.new(100000, 100000, 100000);
-	v95.Velocity = Vector3.zero;
-	v95.Parent = v269;
-	v96 = Instance.new("BodyGyro");
-	v96.MaxTorque = Vector3.new(100000, 100000, 100000);
-	v96.CFrame = v269.CFrame;
-	v96.Parent = v269;
-	v97 = v7.RenderStepped:Connect(function()
-		if not v11.FlyEnabled then
-			return;
-		end
-		v2[4694] = v268:FindFirstChildOfClass("Humanoid");
-		if v2[4694] then
-			v2[4694].PlatformStand = true;
-		end
-		v2[4715] = Vector3.zero;
-		if v8:IsKeyDown(Enum.KeyCode.W) then
-			v2[4715] += v6.CFrame.LookVector
-		end
-		if v8:IsKeyDown(Enum.KeyCode.S) then
-			v2[4715] -= v6.CFrame.LookVector
-		end
-		if v8:IsKeyDown(Enum.KeyCode.A) then
-			v2[4715] -= v6.CFrame.RightVector
-		end
-		if v8:IsKeyDown(Enum.KeyCode.D) then
-			v2[4715] += v6.CFrame.RightVector
-		end
-		if v8:IsKeyDown(Enum.KeyCode.Space) then
-			v2[4715] += Vector3.new(0, 1, 0)
-		end
-		if v8:IsKeyDown(Enum.KeyCode.LeftControl) then
-			v2[4715] -= Vector3.new(0, 1, 0)
-		end
-		if (v2[4715].Magnitude > 0) then
-			v95.Velocity = v2[4715].Unit * v11.FlySpeed;
-		else
-			v95.Velocity = Vector3.zero;
-		end
-		v96.CFrame = v6.CFrame;
-	end);
-end
-local function v99()
-	v11.FlyEnabled = false;
-	if v97 then
-		v97:Disconnect();
-		v97 = nil;
-	end
-	if v95 then
-		v95:Destroy();
-		v95 = nil;
-	end
-	if v96 then
-		v96:Destroy();
-		v96 = nil;
-	end
-	v2[4966] = v5.Character;
-	if (v2[4966] and v2[4966]:FindFirstChildOfClass("Humanoid")) then
-		v2[4966].Humanoid.PlatformStand = false;
-	end
-end
-local v100 = false;
-v7.Heartbeat:Connect(function()
-	if (v11.FlyEnabled ~= v100) then
-		v100 = v11.FlyEnabled;
-		if v11.FlyEnabled then
-			v98();
-		else
-			v99();
-		end
-	end
-end);
-spawn(function()
-	while wait(0.1) do
-		if v11.AutoPickupGun then
-			v2[5052] = v14();
-			if v2[5052] then
-				v2[5059] = v2[5052]:GetPivot().Position;
-				v2[5069] = v5.Character;
-				if (v2[5069] and v2[5069]:FindFirstChild("HumanoidRootPart")) then
-					v2[5085] = (v2[5069].HumanoidRootPart.Position - v2[5059]).Magnitude;
-					if (v2[5085] > 2) then
-						v15(v2[5059]);
-					end
-				end
-			end
-		end
-		if v11.KillAura then
-			v2[5113] = v12(v5);
-			if (v2[5113] == "Murderer") then
-				v2[5123] = v5.Character;
-				if (v2[5123] and v2[5123]:FindFirstChild("HumanoidRootPart")) then
-					v2[5139] = v2[5123].HumanoidRootPart.Position;
-					v2[5148], v2[5149] = nil, v11.KillAuraRange;
-					for v420, v421 in ipairs(v4:GetPlayers()) do
-						if (v421 ~= v5) then
-							v2[5172] = v12(v421);
-							if (v2[5172] ~= "Murderer") then
-								v2[5182] = v421.Character;
-								if (v2[5182] and v2[5182]:FindFirstChild("HumanoidRootPart") and v2[5182]:FindFirstChildOfClass("Humanoid") and (v2[5182].Humanoid.Health > 0)) then
-									v2[5215] = (v2[5139] - v2[5182].HumanoidRootPart.Position).Magnitude;
-									if (v2[5215] < v2[5149]) then
-										v2[5149] = v2[5215];
-										v2[5148] = v421;
+local function v10()
+	local v105 = 0 - 0;
+	local v106;
+	while true do
+		if (v105 == 0) then
+			v106 = 0 - 0;
+			while true do
+				if (v106 == 0) then
+					for v346, v347 in ipairs(workspace:GetDescendants()) do
+						if v347:IsA("Tool") then
+							local v381 = 0;
+							local v382;
+							while true do
+								if (0 == v381) then
+									v382 = string.lower(v347.Name);
+									if (v382:find("gun") or v382:find("pistol")) then
+										return v347;
 									end
+									break;
 								end
 							end
 						end
 					end
-					if (v2[5148] and v2[5148].Character and v2[5148].Character:FindFirstChild("HumanoidRootPart")) then
-						v15(v2[5148].Character.HumanoidRootPart.Position);
-						wait(0.05);
-						v16();
+					return nil;
+				end
+			end
+			break;
+		end
+	end
+end
+local function v11(v107)
+	local v108 = 1824 - (1195 + 629);
+	local v109;
+	local v110;
+	while true do
+		if (v108 == 1) then
+			v110 = v109.HumanoidRootPart.Position;
+			if (v107 and v107:IsA("Tool")) then
+				v107:PivotTo(CFrame.new(v110));
+			elseif v107 then
+				v107.CFrame = CFrame.new(v110);
+			end
+			break;
+		end
+		if (v108 == (0 - 0)) then
+			v109 = v1.Character;
+			if (not v109 or not v109:FindFirstChild("HumanoidRootPart")) then
+				return;
+			end
+			v108 = 242 - (187 + 54);
+		end
+	end
+end
+local function v12()
+	local v111 = 0;
+	local v112;
+	local v113;
+	while true do
+		if ((781 - (162 + 618)) == v111) then
+			local v232 = 0 + 0;
+			while true do
+				if (v232 == (0 + 0)) then
+					v113 = v112:FindFirstChildOfClass("Tool");
+					if not v113 then
+						local v356 = 0 - 0;
+						local v357;
+						while true do
+							if (v356 == (0 - 0)) then
+								v357 = v1:FindFirstChildOfClass("Backpack");
+								if v357 then
+									v113 = v357:FindFirstChildOfClass("Tool");
+								end
+								break;
+							end
+						end
 					end
+					v232 = 1;
+				end
+				if (v232 == (1 + 0)) then
+					v111 = 1638 - (1373 + 263);
+					break;
+				end
+			end
+		end
+		if (v111 == 2) then
+			if v113 then
+				v113:Activate();
+			else
+				local v305 = 1000 - (451 + 549);
+				local v306;
+				while true do
+					if (v305 == (0 + 0)) then
+						v306 = 0 - 0;
+						while true do
+							if (v306 == 1) then
+								v6:SendMouseButtonEvent(0, 0 - 0, 1384 - (746 + 638), false, game, 0);
+								break;
+							end
+							if ((0 + 0) == v306) then
+								v6:SendMouseButtonEvent(0, 0 - 0, 0, true, game, 0);
+								wait(341.05 - (218 + 123));
+								v306 = 1;
+							end
+						end
+						break;
+					end
+				end
+			end
+			break;
+		end
+		if (v111 == (1581 - (1535 + 46))) then
+			v112 = v1.Character;
+			if not v112 then
+				return;
+			end
+			v111 = 1;
+		end
+	end
+end
+local v13 = Instance.new("ScreenGui");
+v13.Name = "BabkaHub";
+v13.ResetOnSpawn = false;
+v13.ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
+v13.Parent = v1:WaitForChild("PlayerGui");
+local v19 = Instance.new("Frame");
+v19.Size = UDim2.new(0 + 0, 400, 0, 350);
+v19.Position = UDim2.new(0.5 + 0, -(760 - (306 + 254)), 0.5 + 0, -(343 - 168));
+v19.BackgroundColor3 = Color3.fromRGB(1482 - (899 + 568), 10 + 5, 20);
+v19.BackgroundTransparency = 0.25 - 0;
+v19.BorderSizePixel = 0;
+v19.Active = true;
+v19.Draggable = true;
+v19.Parent = v13;
+local v28 = Instance.new("UICorner");
+v28.CornerRadius = UDim.new(0, 619 - (268 + 335));
+v28.Parent = v19;
+local v31 = Instance.new("Frame");
+v31.Size = UDim2.new(291 - (60 + 230), 572 - (426 + 146), 0, 6 + 39);
+v31.Position = UDim2.new(1456 - (282 + 1174), 811 - (569 + 242), 0 - 0, 0 + 0);
+v31.BackgroundColor3 = Color3.fromRGB(1024 - (706 + 318), 0, 0);
+v31.BackgroundTransparency = 0.3;
+v31.BorderSizePixel = 0;
+v31.Parent = v19;
+local v38 = Instance.new("UICorner");
+v38.CornerRadius = UDim.new(1251 - (721 + 530), 1287 - (945 + 326));
+v38.Parent = v31;
+local v41 = Instance.new("TextLabel");
+v41.Size = UDim2.new(2 - 1, -60, 1 + 0, 0);
+v41.Position = UDim2.new(700 - (271 + 429), 20, 0, 0 + 0);
+v41.BackgroundTransparency = 1501 - (1408 + 92);
+v41.Text = "Babka Hub";
+v41.TextColor3 = Color3.fromRGB(1341 - (461 + 625), 1543 - (993 + 295), 255);
+v41.Font = Enum.Font.GothamBold;
+v41.TextSize = 20;
+v41.TextXAlignment = Enum.TextXAlignment.Left;
+v41.Parent = v31;
+local v53 = Instance.new("TextButton");
+v53.Size = UDim2.new(0 + 0, 30, 1171 - (418 + 753), 12 + 18);
+v53.Position = UDim2.new(1, -40, 0 + 0, 3 + 4);
+v53.BackgroundColor3 = Color3.fromRGB(65 + 190, 529 - (406 + 123), 1769 - (1749 + 20));
+v53.BackgroundTransparency = 0.4 + 0;
+v53.BorderSizePixel = 0;
+v53.Text = "✕";
+v53.TextColor3 = Color3.fromRGB(1577 - (1249 + 73), 91 + 164, 1400 - (466 + 679));
+v53.Font = Enum.Font.GothamBold;
+v53.TextSize = 38 - 22;
+v53.Parent = v31;
+local v64 = Instance.new("UICorner");
+v64.CornerRadius = UDim.new(0 - 0, 1908 - (106 + 1794));
+v64.Parent = v53;
+v53.MouseButton1Click:Connect(function()
+	v13:Destroy();
+end);
+local v67 = {};
+local v68 = {"Combat","Movement","Visual","Misc"};
+local v69 = {};
+local function v70(v114, v115)
+	local v116 = 0 + 0;
+	local v117;
+	local v118;
+	while true do
+		if (v116 == (0 - 0)) then
+			local v234 = 0 - 0;
+			while true do
+				if (v234 == (115 - (4 + 110))) then
+					v117.Size = UDim2.new(584.25 - (57 + 527), -(1433 - (41 + 1386)), 103 - (17 + 86), 22 + 10);
+					v116 = 1;
+					break;
+				end
+				if (v234 == (0 - 0)) then
+					v117 = Instance.new("TextButton");
+					v117.Name = v114;
+					v234 = 2 - 1;
+				end
+			end
+		end
+		if (v116 == 1) then
+			v117.Position = UDim2.new((v115 - (167 - (122 + 44))) * 0.25, 5 - 2, 0, 165 - 115);
+			v117.BackgroundColor3 = Color3.fromRGB(208 + 47, 37 + 218, 516 - 261);
+			v117.BackgroundTransparency = 65.7 - (30 + 35);
+			v116 = 2 + 0;
+		end
+		if (v116 == (1260 - (1043 + 214))) then
+			v117.Font = Enum.Font.Gotham;
+			v117.TextSize = 13;
+			v117.Parent = v19;
+			v116 = 15 - 11;
+		end
+		if (v116 == (1217 - (323 + 889))) then
+			v117.MouseButton1Click:Connect(function()
+				local v295 = 0 - 0;
+				while true do
+					if (v295 == 1) then
+						v117.BackgroundTransparency = 580.2 - (361 + 219);
+						v117.TextColor3 = Color3.fromRGB(255, 255, 255);
+						v295 = 2;
+					end
+					if (v295 == (322 - (53 + 267))) then
+						v69[v114].Visible = true;
+						break;
+					end
+					if (v295 == (0 + 0)) then
+						for v358, v359 in pairs(v69) do
+							v359.Visible = false;
+						end
+						for v361, v362 in pairs(v67) do
+							local v363 = 0;
+							while true do
+								if (v363 == (413 - (15 + 398))) then
+									v362.BackgroundTransparency = 982.7 - (18 + 964);
+									v362.TextColor3 = Color3.fromRGB(752 - 552, 116 + 84, 127 + 73);
+									break;
+								end
+							end
+						end
+						v295 = 851 - (20 + 830);
+					end
+				end
+			end);
+			return v117;
+		end
+		if (v116 == 4) then
+			local v242 = 0;
+			while true do
+				if (v242 == 0) then
+					v118 = Instance.new("UICorner");
+					v118.CornerRadius = UDim.new(0, 7 + 1);
+					v242 = 127 - (116 + 10);
+				end
+				if (v242 == 1) then
+					v118.Parent = v117;
+					v116 = 5;
+					break;
+				end
+			end
+		end
+		if ((1 + 1) == v116) then
+			v117.BorderSizePixel = 738 - (542 + 196);
+			v117.Text = v114;
+			v117.TextColor3 = Color3.fromRGB(428 - 228, 200, 59 + 141);
+			v116 = 2 + 1;
+		end
+	end
+end
+for v119, v120 in ipairs(v68) do
+	local v121 = 0 + 0;
+	local v122;
+	while true do
+		if (v121 == (0 - 0)) then
+			v122 = v70(v120, v119);
+			table.insert(v67, v122);
+			break;
+		end
+	end
+end
+local function v71(v123)
+	local v124 = Instance.new("Frame");
+	v124.Name = v123;
+	v124.Size = UDim2.new(2 - 1, -20, 1552 - (1126 + 425), -(495 - (118 + 287)));
+	v124.Position = UDim2.new(0 - 0, 1131 - (118 + 1003), 0 - 0, 85);
+	v124.BackgroundTransparency = 378 - (142 + 235);
+	v124.Parent = v19;
+	v124.Visible = false;
+	return v124;
+end
+for v131, v132 in ipairs(v68) do
+	v69[v132] = v71(v132);
+end
+v69['Combat'].Visible = true;
+local function v73(v134, v135, v136, v137)
+	local v138 = 0 - 0;
+	local v139;
+	local v140;
+	local v141;
+	local v142;
+	local v143;
+	local v144;
+	local v145;
+	while true do
+		if (v138 == (0 + 0)) then
+			v139 = Instance.new("Frame");
+			v139.Size = UDim2.new(978 - (553 + 424), 0 - 0, 0 + 0, 32);
+			v139.Position = UDim2.new(0 + 0, 0 + 0, 0 + 0, v137);
+			v139.BackgroundTransparency = 1 + 0;
+			v139.Parent = v134;
+			v138 = 2 - 1;
+		end
+		if (v138 == 3) then
+			v141 = Instance.new("TextButton");
+			v141.Size = UDim2.new(0, 122 - 78, 0 - 0, 7 + 15);
+			v141.Position = UDim2.new(4 - 3, -(803 - (239 + 514)), 0 + 0, 1334 - (797 + 532));
+			v141.BackgroundColor3 = Color3.fromRGB(186 + 69, 0 + 0, 0 - 0);
+			v141.BackgroundTransparency = 1202.3 - (373 + 829);
+			v138 = 735 - (476 + 255);
+		end
+		if (v138 == (1137 - (369 + 761))) then
+			v145 = nil;
+			function v145()
+				if v7[v136] then
+					local v318 = 0;
+					while true do
+						if (v318 == (0 + 0)) then
+							v141.BackgroundColor3 = Color3.fromRGB(0, 255, 0);
+							v141.BackgroundTransparency = 0.3 - 0;
+							v318 = 1;
+						end
+						if (v318 == (1 - 0)) then
+							v143.Position = UDim2.new(238 - (64 + 174), 4 + 20, 0, 2);
+							break;
+						end
+					end
+				else
+					local v319 = 0 - 0;
+					while true do
+						if (v319 == (337 - (144 + 192))) then
+							v143.Position = UDim2.new(216 - (42 + 174), 2 + 0, 0 + 0, 1 + 1);
+							break;
+						end
+						if (v319 == 0) then
+							v141.BackgroundColor3 = Color3.fromRGB(1759 - (363 + 1141), 1580 - (1183 + 397), 0 - 0);
+							v141.BackgroundTransparency = 0.3 + 0;
+							v319 = 1 + 0;
+						end
+					end
+				end
+			end
+			v145();
+			v141.MouseButton1Click:Connect(function()
+				local v296 = 0;
+				while true do
+					if (v296 == (1975 - (1913 + 62))) then
+						v7[v136] = not v7[v136];
+						v145();
+						v296 = 1 + 0;
+					end
+					if (v296 == 1) then
+						if ((v136 == "SpeedEnabled") and not v7[v136]) then
+							local v389 = v1.Character;
+							if (v389 and v389:FindFirstChildOfClass("Humanoid")) then
+								v389.Humanoid.WalkSpeed = 42 - 26;
+							end
+						elseif ((v136 == "FlyEnabled") and not v7[v136]) then
+							StopFly();
+						end
+						break;
+					end
+				end
+			end);
+			break;
+		end
+		if (v138 == 6) then
+			v143.BorderSizePixel = 1933 - (565 + 1368);
+			v143.Parent = v141;
+			v144 = Instance.new("UICorner");
+			v144.CornerRadius = UDim.new(1, 0 - 0);
+			v144.Parent = v143;
+			v138 = 7;
+		end
+		if (v138 == 5) then
+			v142.Parent = v141;
+			v143 = Instance.new("Frame");
+			v143.Size = UDim2.new(1661 - (1477 + 184), 24 - 6, 0, 17 + 1);
+			v143.Position = UDim2.new(0, 2, 856 - (564 + 292), 2 - 0);
+			v143.BackgroundColor3 = Color3.fromRGB(768 - 513, 255, 255);
+			v138 = 6;
+		end
+		if (v138 == (305 - (244 + 60))) then
+			v140 = Instance.new("TextLabel");
+			v140.Size = UDim2.new(0.7, 0, 1 + 0, 0);
+			v140.Position = UDim2.new(476 - (41 + 435), 0, 1001 - (938 + 63), 0 + 0);
+			v140.BackgroundTransparency = 1126 - (936 + 189);
+			v140.Text = v135;
+			v138 = 1 + 1;
+		end
+		if (v138 == (1617 - (1565 + 48))) then
+			v141.BorderSizePixel = 0;
+			v141.Text = "";
+			v141.Parent = v139;
+			v142 = Instance.new("UICorner");
+			v142.CornerRadius = UDim.new(1 + 0, 1138 - (782 + 356));
+			v138 = 272 - (176 + 91);
+		end
+		if (v138 == 2) then
+			v140.TextColor3 = Color3.fromRGB(255, 255, 664 - 409);
+			v140.Font = Enum.Font.Gotham;
+			v140.TextSize = 18 - 5;
+			v140.TextXAlignment = Enum.TextXAlignment.Left;
+			v140.Parent = v139;
+			v138 = 1095 - (975 + 117);
+		end
+	end
+end
+local function v74(v146, v147, v148, v149, v150, v151, v152)
+	local v153 = Instance.new("Frame");
+	v153.Size = UDim2.new(1876 - (157 + 1718), 0, 0 + 0, 159 - 114);
+	v153.Position = UDim2.new(0 - 0, 1018 - (697 + 321), 0, v152);
+	v153.BackgroundTransparency = 2 - 1;
+	v153.Parent = v146;
+	local v158 = Instance.new("TextLabel");
+	v158.Size = UDim2.new(1, 0, 0, 37 - 19);
+	v158.Position = UDim2.new(0 - 0, 0 + 0, 0 - 0, 0 - 0);
+	v158.BackgroundTransparency = 1228 - (322 + 905);
+	v158.Text = v147 .. ": " .. tostring(v150);
+	v158.TextColor3 = Color3.fromRGB(866 - (602 + 9), 1444 - (449 + 740), 1127 - (826 + 46));
+	v158.Font = Enum.Font.Gotham;
+	v158.TextSize = 959 - (245 + 702);
+	v158.TextXAlignment = Enum.TextXAlignment.Left;
+	v158.Parent = v153;
+	local v170 = Instance.new("TextBox");
+	v170.Size = UDim2.new(3 - 2, 0 + 0, 1898 - (260 + 1638), 460 - (382 + 58));
+	v170.Position = UDim2.new(0 - 0, 0, 0 + 0, 41 - 21);
+	v170.BackgroundColor3 = Color3.fromRGB(255, 255, 757 - 502);
+	v170.BackgroundTransparency = 1205.4 - (902 + 303);
+	v170.BorderSizePixel = 0 - 0;
+	v170.Text = tostring(v150);
+	v170.TextColor3 = Color3.fromRGB(613 - 358, 22 + 233, 1945 - (1121 + 569));
+	v170.Font = Enum.Font.Gotham;
+	v170.TextSize = 226 - (22 + 192);
+	v170.Parent = v153;
+	local v181 = Instance.new("UICorner");
+	v181.CornerRadius = UDim.new(683 - (483 + 200), 1467 - (1404 + 59));
+	v181.Parent = v170;
+	v170.FocusLost:Connect(function(v210)
+		local v211 = tonumber(v170.Text);
+		if v211 then
+			local v277 = 0;
+			while true do
+				if (v277 == (0 - 0)) then
+					v211 = math.clamp(v211, v148, v149);
+					v7[v151] = v211;
+					v277 = 1;
+				end
+				if (v277 == (1 - 0)) then
+					v158.Text = v147 .. ": " .. tostring(v211);
+					if ((v151 == "SpeedValue") and v7.SpeedEnabled) then
+						local v364 = 765 - (468 + 297);
+						local v365;
+						while true do
+							if (v364 == (562 - (334 + 228))) then
+								v365 = v1.Character;
+								if (v365 and v365:FindFirstChildOfClass("Humanoid")) then
+									v365.Humanoid.WalkSpeed = v211;
+								end
+								break;
+							end
+						end
+					end
+					break;
+				end
+			end
+		end
+	end);
+end
+v73(v69['Combat'], "Auto Pickup Gun", "AutoPickupGun", 33 - 23);
+v73(v69['Combat'], "Kill Aura (Murderer)", "KillAura", 50);
+v74(v69['Combat'], "Kill Aura Range", 11 - 6, 90 - 40, v7.KillAuraRange, "KillAuraRange", 90);
+v73(v69['Movement'], "Speed", "SpeedEnabled", 3 + 7);
+v74(v69['Movement'], "Speed Value", 252 - (141 + 95), 200, v7.SpeedValue, "SpeedValue", 50);
+v73(v69['Movement'], "Fly", "FlyEnabled", 89 + 1);
+v74(v69['Movement'], "Fly Speed", 10, 514 - 314, v7.FlySpeed, "FlySpeed", 130);
+v73(v69['Visual'], "ESP (Заливка)", "ESPEnabled", 24 - 14);
+local v75 = Instance.new("TextLabel");
+v75.Size = UDim2.new(1 + 0, 0 - 0, 0 + 0, 30);
+v75.Position = UDim2.new(0, 0, 0 + 0, 10);
+v75.BackgroundTransparency = 1 - 0;
+v75.Text = "Babka Hub v2.0";
+v75.TextColor3 = Color3.fromRGB(255, 255, 151 + 104);
+v75.Font = Enum.Font.Gotham;
+v75.TextSize = 177 - (92 + 71);
+v75.Parent = v69['Misc'];
+local v86 = {};
+local function v87(v184)
+	if v86[v184] then
+		return;
+	end
+	local v185 = Drawing.new("Square");
+	v185.Thickness = 1 + 0;
+	v185.Filled = true;
+	v185.Transparency = v7.ESPFillTransparency;
+	v185.Visible = false;
+	v185.Color = Color3.new(1 - 0, 1, 766 - (574 + 191));
+	v86[v184] = v185;
+end
+local function v88(v193)
+	local v194 = 0;
+	local v195;
+	while true do
+		if (v194 == (0 + 0)) then
+			v195 = v86[v193];
+			if v195 then
+				local v307 = 0 - 0;
+				while true do
+					if (v307 == 0) then
+						v195:Remove();
+						v86[v193] = nil;
+						break;
+					end
+				end
+			end
+			break;
+		end
+	end
+end
+v3.RenderStepped:Connect(function()
+	if not v7.ESPEnabled then
+		local v220 = 0;
+		while true do
+			if ((0 + 0) == v220) then
+				for v322, v323 in pairs(v86) do
+					v323.Visible = false;
+				end
+				return;
+			end
+		end
+	end
+	for v212, v213 in ipairs(v0:GetPlayers()) do
+		if (v213 ~= v1) then
+			local v279 = 0;
+			local v280;
+			local v281;
+			local v282;
+			local v283;
+			while true do
+				if (v279 == (850 - (254 + 595))) then
+					v281 = v213.Character;
+					v282 = v281 and v281:FindFirstChild("HumanoidRootPart");
+					v279 = 128 - (55 + 71);
+				end
+				if (v279 == (0 - 0)) then
+					v87(v213);
+					v280 = v86[v213];
+					v279 = 1791 - (573 + 1217);
+				end
+				if (v279 == (5 - 3)) then
+					v283 = v281 and v281:FindFirstChildOfClass("Humanoid");
+					if (v282 and v283 and (v283.Health > 0)) then
+						local v367 = 0 + 0;
+						local v368;
+						local v369;
+						local v370;
+						local v371;
+						local v372;
+						local v373;
+						local v374;
+						local v375;
+						local v376;
+						while true do
+							if (v367 == (4 - 1)) then
+								v375, v376 = v2:WorldToScreenPoint(v372);
+								if (v374 and v376) then
+									local v399 = 939 - (714 + 225);
+									local v400;
+									local v401;
+									local v402;
+									local v403;
+									while true do
+										if ((2 - 1) == v399) then
+											v402 = v373.X - (v401 / 2);
+											v403 = v373.Y;
+											v399 = 2;
+										end
+										if ((5 - 1) == v399) then
+											v280.Visible = true;
+											break;
+										end
+										if ((1 + 2) == v399) then
+											v280.Color = v369;
+											v280.Transparency = v7.ESPFillTransparency;
+											v399 = 5 - 1;
+										end
+										if (v399 == (808 - (118 + 688))) then
+											v280.Position = Vector2.new(v402, v403);
+											v280.Size = Vector2.new(v401, v400);
+											v399 = 3;
+										end
+										if (0 == v399) then
+											v400 = math.abs(v375.Y - v373.Y);
+											v401 = v400 * (48.6 - (25 + 23));
+											v399 = 1;
+										end
+									end
+								else
+									v280.Visible = false;
+								end
+								break;
+							end
+							if (v367 == (1 + 1)) then
+								v372 = v370 - Vector3.new(1886 - (927 + 959), 10 - 7, 0);
+								v373, v374 = v2:WorldToScreenPoint(v371);
+								v367 = 735 - (16 + 716);
+							end
+							if (v367 == 0) then
+								local v394 = 0 - 0;
+								while true do
+									if (v394 == (98 - (11 + 86))) then
+										v367 = 2 - 1;
+										break;
+									end
+									if (v394 == (285 - (175 + 110))) then
+										v368 = v8(v213);
+										v369 = v9(v368);
+										v394 = 1;
+									end
+								end
+							end
+							if (v367 == 1) then
+								local v395 = 0 - 0;
+								while true do
+									if (v395 == (4 - 3)) then
+										v367 = 1798 - (503 + 1293);
+										break;
+									end
+									if (v395 == (0 - 0)) then
+										v370 = v282.Position;
+										v371 = v370 + Vector3.new(0 + 0, 2.5, 1061 - (810 + 251));
+										v395 = 1;
+									end
+								end
+							end
+						end
+					else
+						v280.Visible = false;
+					end
+					break;
 				end
 			end
 		end
 	end
 end);
-v5.CharacterAdded:Connect(function(v281)
-	wait(0.5);
-	if (v11.SpeedEnabled and v281:FindFirstChildOfClass("Humanoid")) then
-		v281.Humanoid.WalkSpeed = v11.SpeedValue;
-	end
-	if v11.FlyEnabled then
-		v99();
-		wait(0.1);
-		if v11.FlyEnabled then
-			v98();
+v0.PlayerRemoving:Connect(function(v196)
+	v88(v196);
+end);
+v3.Heartbeat:Connect(function()
+	if v7.SpeedEnabled then
+		local v221 = 0 + 0;
+		local v222;
+		while true do
+			if (v221 == 0) then
+				v222 = v1.Character;
+				if (v222 and v222:FindFirstChildOfClass("Humanoid")) then
+					v222.Humanoid.WalkSpeed = v7.SpeedValue;
+				end
+				break;
+			end
 		end
 	end
 end);
-print("Babka Hub загружен! v1.0");
+local v89, v90, v91;
+function StartFly()
+	local v197 = 0 + 0;
+	local v198;
+	local v199;
+	while true do
+		if (v197 == (0 + 0)) then
+			local v284 = 0;
+			while true do
+				if (v284 == (533 - (43 + 490))) then
+					v198 = v1.Character;
+					if not v198 then
+						return;
+					end
+					v284 = 1;
+				end
+				if (v284 == 1) then
+					v199 = v198:FindFirstChild("HumanoidRootPart");
+					v197 = 734 - (711 + 22);
+					break;
+				end
+			end
+		end
+		if (v197 == 4) then
+			v91 = v3.RenderStepped:Connect(function()
+				if not v7.FlyEnabled then
+					return;
+				end
+				local v297 = v198:FindFirstChildOfClass("Humanoid");
+				if v297 then
+					v297.PlatformStand = true;
+				end
+				local v298 = Vector3.zero;
+				if v4:IsKeyDown(Enum.KeyCode.W) then
+					v298 += v2.CFrame.LookVector
+				end
+				if v4:IsKeyDown(Enum.KeyCode.S) then
+					v298 -= v2.CFrame.LookVector
+				end
+				if v4:IsKeyDown(Enum.KeyCode.A) then
+					v298 -= v2.CFrame.RightVector
+				end
+				if v4:IsKeyDown(Enum.KeyCode.D) then
+					v298 += v2.CFrame.RightVector
+				end
+				if v4:IsKeyDown(Enum.KeyCode.Space) then
+					v298 += Vector3.new(0 - 0, 860 - (240 + 619), 0 + 0)
+				end
+				if v4:IsKeyDown(Enum.KeyCode.LeftControl) then
+					v298 -= Vector3.new(0 - 0, 1 + 0, 0)
+				end
+				if (v298.Magnitude > (1744 - (1344 + 400))) then
+					v89.Velocity = v298.Unit * v7.FlySpeed;
+				else
+					v89.Velocity = Vector3.zero;
+				end
+				v90.CFrame = v2.CFrame;
+			end);
+			break;
+		end
+		if (v197 == (406 - (255 + 150))) then
+			local v285 = 0;
+			while true do
+				if (v285 == (0 + 0)) then
+					if not v199 then
+						return;
+					end
+					v89 = Instance.new("BodyVelocity");
+					v285 = 1 + 0;
+				end
+				if (v285 == (4 - 3)) then
+					v89.MaxForce = Vector3.new(322992 - 222992, 101739 - (404 + 1335), 100406 - (183 + 223));
+					v197 = 2;
+					break;
+				end
+			end
+		end
+		if (v197 == (2 - 0)) then
+			v89.Velocity = Vector3.zero;
+			v89.Parent = v199;
+			v90 = Instance.new("BodyGyro");
+			v197 = 3;
+		end
+		if (v197 == (2 + 1)) then
+			local v289 = 0;
+			while true do
+				if (v289 == (1 + 0)) then
+					v90.Parent = v199;
+					v197 = 4;
+					break;
+				end
+				if (v289 == 0) then
+					v90.MaxTorque = Vector3.new(100337 - (10 + 327), 69639 + 30361, 100000);
+					v90.CFrame = v199.CFrame;
+					v289 = 339 - (118 + 220);
+				end
+			end
+		end
+	end
+end
+function StopFly()
+	local v200 = 0;
+	local v201;
+	while true do
+		if (v200 == (0 + 0)) then
+			v7.FlyEnabled = false;
+			if v91 then
+				local v309 = 449 - (108 + 341);
+				while true do
+					if (v309 == (0 + 0)) then
+						v91:Disconnect();
+						v91 = nil;
+						break;
+					end
+				end
+			end
+			v200 = 4 - 3;
+		end
+		if (v200 == (1495 - (711 + 782))) then
+			v201 = v1.Character;
+			if (v201 and v201:FindFirstChildOfClass("Humanoid")) then
+				v201.Humanoid.PlatformStand = false;
+			end
+			break;
+		end
+		if (v200 == 1) then
+			if v89 then
+				local v311 = 0;
+				local v312;
+				while true do
+					if (v311 == (0 - 0)) then
+						v312 = 469 - (270 + 199);
+						while true do
+							if (v312 == (0 + 0)) then
+								v89:Destroy();
+								v89 = nil;
+								break;
+							end
+						end
+						break;
+					end
+				end
+			end
+			if v90 then
+				local v313 = 1819 - (580 + 1239);
+				while true do
+					if (0 == v313) then
+						v90:Destroy();
+						v90 = nil;
+						break;
+					end
+				end
+			end
+			v200 = 5 - 3;
+		end
+	end
+end
+local v92 = false;
+v3.Heartbeat:Connect(function()
+	if (v7.FlyEnabled ~= v92) then
+		local v223 = 0 + 0;
+		local v224;
+		while true do
+			if (v223 == (0 + 0)) then
+				v224 = 0 + 0;
+				while true do
+					if (v224 == 0) then
+						v92 = v7.FlyEnabled;
+						if v7.FlyEnabled then
+							StartFly();
+						else
+							StopFly();
+						end
+						break;
+					end
+				end
+				break;
+			end
+		end
+	end
+end);
+spawn(function()
+	while wait(0.1 - 0) do
+		local v214 = 0 + 0;
+		while true do
+			if (v214 == (1167 - (645 + 522))) then
+				if v7.AutoPickupGun then
+					local v337 = 0;
+					local v338;
+					while true do
+						if (v337 == (1790 - (1010 + 780))) then
+							v338 = v10();
+							if v338 then
+								v11(v338);
+							end
+							break;
+						end
+					end
+				end
+				if v7.KillAura then
+					local v339 = 0;
+					local v340;
+					while true do
+						if ((0 + 0) == v339) then
+							v340 = v8(v1);
+							if (v340 == "Murderer") then
+								local v396 = 0 - 0;
+								local v397;
+								while true do
+									if (v396 == (0 - 0)) then
+										v397 = v1.Character;
+										if (v397 and v397:FindFirstChild("HumanoidRootPart")) then
+											local v414 = v397.HumanoidRootPart.Position;
+											local v415, v416 = nil, v7.KillAuraRange;
+											for v417, v418 in ipairs(v0:GetPlayers()) do
+												if (v418 ~= v1) then
+													local v420 = 1836 - (1045 + 791);
+													local v421;
+													while true do
+														if ((0 - 0) == v420) then
+															v421 = v8(v418);
+															if (v421 ~= "Murderer") then
+																local v422 = 0;
+																local v423;
+																while true do
+																	if ((0 - 0) == v422) then
+																		v423 = v418.Character;
+																		if (v423 and v423:FindFirstChild("HumanoidRootPart") and v423:FindFirstChildOfClass("Humanoid") and (v423.Humanoid.Health > 0)) then
+																			local v425 = (v414 - v423.HumanoidRootPart.Position).Magnitude;
+																			if (v425 < v416) then
+																				local v426 = 505 - (351 + 154);
+																				while true do
+																					if (v426 == (1574 - (1281 + 293))) then
+																						v416 = v425;
+																						v415 = v418;
+																						break;
+																					end
+																				end
+																			end
+																		end
+																		break;
+																	end
+																end
+															end
+															break;
+														end
+													end
+												end
+											end
+											if (v415 and v415.Character and v415.Character:FindFirstChild("HumanoidRootPart")) then
+												local v419 = 266 - (28 + 238);
+												while true do
+													if (v419 == 1) then
+														v12();
+														break;
+													end
+													if (v419 == (0 - 0)) then
+														TeleportTo(v415.Character.HumanoidRootPart.Position);
+														wait(1559.05 - (1381 + 178));
+														v419 = 1 + 0;
+													end
+												end
+											end
+										end
+										break;
+									end
+								end
+							end
+							break;
+						end
+					end
+				end
+				break;
+			end
+		end
+	end
+end);
+v1.CharacterAdded:Connect(function(v202)
+	wait(0.5 + 0);
+	if (v7.SpeedEnabled and v202:FindFirstChildOfClass("Humanoid")) then
+		v202.Humanoid.WalkSpeed = v7.SpeedValue;
+	end
+	if v7.FlyEnabled then
+		local v227 = 0 + 0;
+		while true do
+			if (v227 == (3 - 2)) then
+				if v7.FlyEnabled then
+					StartFly();
+				end
+				break;
+			end
+			if (v227 == 0) then
+				StopFly();
+				wait(0.1 + 0);
+				v227 = 1;
+			end
+		end
+	end
+end);
+print("Babka Hub v2.0 загружен!");
